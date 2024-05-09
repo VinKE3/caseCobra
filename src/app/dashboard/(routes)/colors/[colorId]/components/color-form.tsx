@@ -43,6 +43,7 @@ export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
 
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  console.log(open);
 
   const title = initialData ? "Editar Color" : "Crear Color";
   const description = initialData
