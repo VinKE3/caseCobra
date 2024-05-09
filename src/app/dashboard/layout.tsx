@@ -1,12 +1,13 @@
 import React from "react";
 import Navbar from "./components/Navbar";
+import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 
 const layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="">
+    <MaxWidthWrapper className="">
       <Navbar />
       {children}
-    </div>
+    </MaxWidthWrapper>
   );
 };
 

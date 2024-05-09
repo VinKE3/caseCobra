@@ -33,16 +33,6 @@ export async function DELETE(
       return new NextResponse("Color id is required", { status: 400 });
     }
 
-    const storeByUserId = await db.phoneColor.findFirst({
-      where: {
-        id: params.colorId,
-      },
-    });
-
-    if (!storeByUserId) {
-      return new NextResponse("Unauthorized", { status: 405 });
-    }
-
     const color = await db.phoneColor.delete({
       where: {
         id: params.colorId,

@@ -12,11 +12,11 @@ export async function POST(
     const { name, value } = body;
 
     if (!name) {
-      return new NextResponse("Name is required", { status: 400 });
+      return new NextResponse("Nombre es requerido", { status: 400 });
     }
 
     if (!value) {
-      return new NextResponse("Value is required", { status: 400 });
+      return new NextResponse("Valor es requerido", { status: 400 });
     }
 
     const color = await db.phoneColor.create({
