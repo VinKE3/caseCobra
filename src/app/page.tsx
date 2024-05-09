@@ -270,7 +270,6 @@ export default function Home() {
           </ul>
         </MaxWidthWrapper>
       </section>
-      <div className="border-t border-zinc-200" />
     </div>
   );
 }
