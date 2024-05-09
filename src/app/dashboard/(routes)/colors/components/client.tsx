@@ -15,7 +15,6 @@ interface ColorClientProps {
 }
 
 export const ColorClient: React.FC<ColorClientProps> = ({ data }) => {
-  const params = useParams();
   const router = useRouter();
 
   return (
