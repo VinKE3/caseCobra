@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { Trash } from "lucide-react";
-import { PhoneColor } from "@prisma/client";
+import { PhoneModel } from "@prisma/client";
 import { useParams, useRouter } from "next/navigation";
 
 import { Input } from "@/components/ui/input";
@@ -28,57 +28,42 @@ const formSchema = z.object({
   name: z.string().min(1, {
     message: "Nombre es requerido",
   }),
-  value: z
-    .string()
-    .min(4, {
-      message: "Mínimo 3 caracteres despues del #",
-    })
-    .max(9, {
-      message: "Máximo 8 caracteres despues del #",
-    })
-    .regex(/^#/, {
-      message: "La cadena debe ser un código hexadecimal válido",
-    }),
 });
+type ModelFormValues = z.infer<typeof formSchema>;
 
-type ColorFormValues = z.infer<typeof formSchema>;
-
-interface ColorFormProps {
-  initialData: PhoneColor | null;
+interface ModelFormProps {
+  initialData: PhoneModel | null;
 }
-
-export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
+export const ModelForm: React.FC<ModelFormProps> = ({ initialData }) => {
   const params = useParams();
   const router = useRouter();
 
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const title = initialData ? "Editar Color" : "Crear Color";
+  const title = initialData ? "Editar Modelo" : "Crear Modelo";
   const description = initialData
-    ? "Editar un Color Existente."
-    : "Agregar Nuevo Color";
-  const toastMessage = initialData ? "Color Actualizado." : "Color Creado.";
+    ? "Editar un Modelo Existente."
+    : "Agregar Nuevo Modelo";
+  const toastMessage = initialData ? "Modelo Actualizado." : "Modelo Creado.";
   const action = initialData ? "Guardar Cambios" : "Crear";
 
-  const form = useForm<ColorFormValues>({
+  const form = useForm<ModelFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData || {
       name: "",
-      value: "#",
     },
   });
-
-  const onSubmit = async (data: ColorFormValues) => {
+  const onSubmit = async (data: ModelFormValues) => {
     try {
       setLoading(true);
       if (initialData) {
-        await axios.patch(`/api/colors/${params.colorId}`, data);
+        await axios.patch(`/api/models/${params.modelId}`, data);
       } else {
-        await axios.post(`/api/colors`, data);
+        await axios.post(`/api/models`, data);
       }
       router.refresh();
-      router.push(`/dashboard/colors`);
+      router.push(`/dashboard/models`);
       toast.success(toastMessage);
     } catch (error: any) {
       toast.error("Algo Salío mal.");
@@ -90,9 +75,9 @@ export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
   const onDelete = async () => {
     try {
       setLoading(true);
-      await axios.delete(`/api/colors/${params.colorId}`);
+      await axios.delete(`/api/models/${params.modelId}`);
       router.refresh();
-      router.push(`/dashboard/colors`);
+      router.push(`/dashboard/models`);
       toast.success("Color Eliminado.");
     } catch (error: any) {
       toast.error(
@@ -141,32 +126,9 @@ export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
                   <FormControl>
                     <Input
                       disabled={loading}
-                      placeholder="Nombre del Color"
+                      placeholder="Nombre del Modelo"
                       {...field}
                     />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="value"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Valor</FormLabel>
-                  <FormControl>
-                    <div className="flex items-center gap-x-4">
-                      <Input
-                        disabled={loading}
-                        placeholder="Valor del Color"
-                        {...field}
-                      />
-                      <div
-                        className="border p-4 rounded-full"
-                        style={{ backgroundColor: field.value }}
-                      />
-                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

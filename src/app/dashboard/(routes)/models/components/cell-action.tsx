@@ -16,10 +16,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { AlertModal } from "@/components/modal/alert-modal";
 
-import { ColorColumn } from "./columns";
+import { ModelColumn } from "./columns";
 
 interface CellActionProps {
-  data: ColorColumn;
+  data: ModelColumn;
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
@@ -30,12 +30,12 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const onConfirm = async () => {
     try {
       setLoading(true);
-      await axios.delete(`/api/colors/${data.id}`);
-      toast.success("Color Eliminado.");
+      await axios.delete(`/api/models/${data.id}`);
+      toast.success("Modelo Eliminado.");
       router.refresh();
     } catch (error) {
       toast.error(
-        "Asegúrese de eliminar todos los productos que utilizan este color."
+        "Asegúrese de eliminar todos los productos que utilizan este modelo."
       );
     } finally {
       setOpen(false);
@@ -61,7 +61,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Acciones</DropdownMenuLabel>
           <DropdownMenuItem
-            onClick={() => router.push(`/dashboard/colors/${data.id}`)}
+            onClick={() => router.push(`/dashboard/models/${data.id}`)}
           >
             <Edit className="mr-2 h-4 w-4" /> Editar
           </DropdownMenuItem>
