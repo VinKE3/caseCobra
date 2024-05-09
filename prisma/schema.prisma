@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,3 +7,51 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Configuration {
+  id              String        @id @default(cuid())
+  width           Int
+  height          Int
+  imageUrl        String
+  croppedImageUrl String?
+  colorId     String    
+  color       PhoneColor     @relation(fields: [colorId], references: [id])
+  modelId String 
+  model PhoneModel @relation(fields: [modelId], references: [id])
+  materialId String
+  material CaseMaterial @relation(fields: [materialId], references: [id])
+  finishId String
+  finish CaseFinish @relation(fields: [finishId], references: [id])
+}
+
+model PhoneColor {
+  id              String        @id @default(cuid())
+  name            String
+  value           String
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  configuration Configuration[]
+}
+
+model PhoneModel {
+  id              String        @id @default(cuid())
+  name            String
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  configuration Configuration[]
+}
+
+model CaseMaterial {
+  id              String        @id @default(cuid())
+  name            String
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  configuration Configuration[]
+}
+
+model CaseFinish {
+  id              String        @id @default(cuid())
+  name            String
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  configuration Configuration[]
+}
