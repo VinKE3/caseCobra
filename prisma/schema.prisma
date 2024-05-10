@@ -13,14 +13,14 @@ model Configuration {
   height          Int
   imageUrl        String
   croppedImageUrl String?
-  colorId     String    
-  color       CaseColor     @relation(fields: [colorId], references: [id])
-  modelId String 
-  model PhoneModel @relation(fields: [modelId], references: [id])
-  materialId String
-  material CaseMaterial @relation(fields: [materialId], references: [id])
-  finishId String
-  finish CaseFinish @relation(fields: [finishId], references: [id])
+  // colorId     String?    
+  // color       CaseColor?     @relation(fields: [colorId], references: [id])
+  // modelId String?
+  // model PhoneModel? @relation(fields: [modelId], references: [id])
+  // materialId String?
+  // material CaseMaterial? @relation(fields: [materialId], references: [id])
+  // finishId String?
+  // finish CaseFinish? @relation(fields: [finishId], references: [id])
 }
 
 model CaseColor {
@@ -29,7 +29,7 @@ model CaseColor {
   value           String
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
-  configuration Configuration[]
+
 }
 
 model PhoneModel {
@@ -39,7 +39,7 @@ model PhoneModel {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   basePrice   Decimal
-  configuration Configuration[]
+
 }
 
 
@@ -49,7 +49,7 @@ model CaseMaterial {
   basePrice   Decimal
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
-  configuration Configuration[]
+
 }
 
 model CaseFinish {
@@ -58,6 +58,6 @@ model CaseFinish {
   basePrice   Decimal
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
-  configuration Configuration[]
+
 }
 
