@@ -21,6 +21,16 @@ const DashNavbar = () => {
       label: "Colores",
       active: pathname === `/dashboard/colors`,
     },
+    {
+      href: `/dashboard/materials`,
+      label: "Materiales",
+      active: pathname === `/dashboard/materials`,
+    },
+    {
+      href: `/dashboard/finishes`,
+      label: "Terminaciones",
+      active: pathname === `/dashboard/finishes`,
+    },
   ];
   return (
     <nav className={cn("flex items-center space-x-4 lg:space-x-6")}>

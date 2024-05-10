@@ -53,7 +53,7 @@ export async function PATCH(
   try {
     const body = await req.json();
 
-    const { name, imageId } = body;
+    const { name, imageId, basePrice } = body;
 
     if (!name) {
       return new NextResponse("Name is required", { status: 400 });
@@ -61,6 +61,9 @@ export async function PATCH(
 
     if (!imageId) {
       return new NextResponse("Image URL is required", { status: 400 });
+    }
+    if (!basePrice) {
+      return new NextResponse("Price is required", { status: 400 });
     }
 
     if (!params.modelId) {
@@ -74,6 +77,7 @@ export async function PATCH(
       data: {
         name,
         imageId,
+        basePrice,
       },
     });
 

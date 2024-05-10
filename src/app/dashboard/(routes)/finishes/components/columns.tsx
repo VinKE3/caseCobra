@@ -4,14 +4,14 @@ import { ColumnDef } from "@tanstack/react-table";
 
 import { CellAction } from "./cell-action";
 
-export type ModelColumn = {
+export type FinishColumn = {
   id: string;
   name: string;
   price: string;
   createdAt: string;
 };
 
-export const columns: ColumnDef<ModelColumn>[] = [
+export const columns: ColumnDef<FinishColumn>[] = [
   {
     accessorKey: "name",
     header: "Nombre",

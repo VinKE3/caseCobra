@@ -38,6 +38,7 @@ model PhoneModel {
   imageId     String
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+  basePrice   Decimal
   configuration Configuration[]
 }
 
@@ -45,6 +46,7 @@ model PhoneModel {
 model CaseMaterial {
   id              String        @id @default(cuid())
   name            String
+  basePrice   Decimal
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
   configuration Configuration[]
@@ -53,6 +55,7 @@ model CaseMaterial {
 model CaseFinish {
   id              String        @id @default(cuid())
   name            String
+  basePrice   Decimal
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
   configuration Configuration[]

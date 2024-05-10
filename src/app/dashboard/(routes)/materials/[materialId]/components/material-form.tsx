@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { Trash } from "lucide-react";
-import { PhoneModel } from "@prisma/client";
+import { CaseMaterial } from "@prisma/client";
 import { useParams, useRouter } from "next/navigation";
 
 import { Input } from "@/components/ui/input";
@@ -23,35 +23,37 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Heading } from "@/components/ui/heading";
 import { AlertModal } from "@/components/modal/alert-modal";
-import ImageUpload from "@/components/ui/image-upload";
 
 const formSchema = z.object({
   name: z.string().min(1, {
     message: "Nombre es requerido",
   }),
   basePrice: z.coerce.number().min(1, { message: "Requerido" }),
-  imageId: z.string().min(1),
 });
-type ModelFormValues = z.infer<typeof formSchema>;
 
-interface ModelFormProps {
-  initialData: PhoneModel | null;
+type MaterialFormValues = z.infer<typeof formSchema>;
+
+interface MaterialFormProps {
+  initialData: CaseMaterial | null;
 }
-export const ModelForm: React.FC<ModelFormProps> = ({ initialData }) => {
+
+export const MaterialForm: React.FC<MaterialFormProps> = ({ initialData }) => {
   const params = useParams();
   const router = useRouter();
 
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const title = initialData ? "Editar Modelo" : "Crear Modelo";
+  const title = initialData ? "Editar Material" : "Crear Material";
   const description = initialData
-    ? "Editar un Modelo Existente."
-    : "Agregar Nuevo Modelo";
-  const toastMessage = initialData ? "Modelo Actualizado." : "Modelo Creado.";
+    ? "Editar un Material Existente."
+    : "Agregar Nuevo Material";
+  const toastMessage = initialData
+    ? "Material Actualizado."
+    : "Material Creado.";
   const action = initialData ? "Guardar Cambios" : "Crear";
 
-  const form = useForm<ModelFormValues>({
+  const form = useForm<MaterialFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData
       ? {
@@ -60,20 +62,20 @@ export const ModelForm: React.FC<ModelFormProps> = ({ initialData }) => {
         }
       : {
           name: "",
-          imageId: "",
           basePrice: 0,
         },
   });
-  const onSubmit = async (data: ModelFormValues) => {
+
+  const onSubmit = async (data: MaterialFormValues) => {
     try {
       setLoading(true);
       if (initialData) {
-        await axios.patch(`/api/models/${params.modelId}`, data);
+        await axios.patch(`/api/materials/${params.materialId}`, data);
       } else {
-        await axios.post(`/api/models`, data);
+        await axios.post(`/api/materials`, data);
       }
       router.refresh();
-      router.push(`/dashboard/models`);
+      router.push(`/dashboard/materials`);
       router.refresh();
       toast.success(toastMessage);
     } catch (error: any) {
@@ -86,13 +88,13 @@ export const ModelForm: React.FC<ModelFormProps> = ({ initialData }) => {
   const onDelete = async () => {
     try {
       setLoading(true);
-      await axios.delete(`/api/models/${params.modelId}`);
+      await axios.delete(`/api/materials/${params.materialId}`);
       router.refresh();
-      router.push(`/dashboard/models`);
-      toast.success("Color Eliminado.");
+      router.push(`/dashboard/materials`);
+      toast.success("Material Eliminado.");
     } catch (error: any) {
       toast.error(
-        "Asegúrese de eliminar todos los productos que utilizan este color."
+        "Asegúrese de eliminar todos los productos que utilizan este Material."
       );
     } finally {
       setLoading(false);
@@ -127,35 +129,17 @@ export const ModelForm: React.FC<ModelFormProps> = ({ initialData }) => {
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-8 w-full"
         >
-          <FormField
-            control={form.control}
-            name="imageId"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Imagen Modelo</FormLabel>
-                <FormControl>
-                  <ImageUpload
-                    value={field.value ? [field.value] : []}
-                    disabled={loading}
-                    onChange={(url) => field.onChange(url)}
-                    onRemove={() => field.onChange("")}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
           <div className="md:grid md:grid-cols-3 gap-8">
             <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Modelo</FormLabel>
+                  <FormLabel>Nombre</FormLabel>
                   <FormControl>
                     <Input
                       disabled={loading}
-                      placeholder="Nombre Modelo"
+                      placeholder="Nombre del Material"
                       {...field}
                     />
                   </FormControl>

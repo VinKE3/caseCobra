@@ -22,7 +22,7 @@ export const ModelClient: React.FC<ModelClientProps> = ({ data }) => {
       <div className="flex items-center justify-between">
         <Heading
           title={`Modelos (${data.length})`}
-          description="Gestioná los modelos de la tienda."
+          description="Gestioná los modelos de los celulares."
         />
         <Button onClick={() => router.push(`/dashboard/models/new`)}>
           <Plus className="mr-2 h-4 w-4" /> Nuevo

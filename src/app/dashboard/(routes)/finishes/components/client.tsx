@@ -1,30 +1,30 @@
 "use client";
 
 import { Plus } from "lucide-react";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
 
-import { columns, ColorColumn } from "./columns";
+import { columns, FinishColumn } from "./columns";
 
-interface ColorClientProps {
-  data: ColorColumn[];
+interface FinishClientProps {
+  data: FinishColumn[];
 }
 
-export const ColorClient: React.FC<ColorClientProps> = ({ data }) => {
+export const FinishClient: React.FC<FinishClientProps> = ({ data }) => {
   const router = useRouter();
 
   return (
     <>
       <div className="flex items-center justify-between">
         <Heading
-          title={`Colores (${data.length})`}
-          description="Gestioná los colores de los cases."
+          title={`Terminaciones (${data.length})`}
+          description="Gestioná las Terminaciones de los cases."
         />
-        <Button onClick={() => router.push(`/dashboard/colors/new`)}>
+        <Button onClick={() => router.push(`/dashboard/finishes/new`)}>
           <Plus className="mr-2 h-4 w-4" /> Nuevo
         </Button>
       </div>

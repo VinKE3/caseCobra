@@ -4,12 +4,12 @@ import { db } from "@/db";
 
 export async function POST(
   req: Request,
-  { params }: { params: { modelId: string } }
+  { params }: { params: { materialId: string } }
 ) {
   try {
     const body = await req.json();
 
-    const { name, imageId, basePrice } = body;
+    const { name, basePrice } = body;
 
     if (!name) {
       return new NextResponse("Nombre es requerido", { status: 400 });
@@ -19,39 +19,34 @@ export async function POST(
       return new NextResponse("Price is required", { status: 400 });
     }
 
-    if (!imageId) {
-      return new NextResponse("Image Id is required", { status: 400 });
-    }
-
-    const model = await db.phoneModel.create({
+    const material = await db.caseMaterial.create({
       data: {
         name,
-        imageId,
         basePrice,
       },
     });
 
-    return NextResponse.json(model);
+    return NextResponse.json(material);
   } catch (error) {
-    console.log("[MODEL_POST]", error);
+    console.log("[MATERIAL_POST]", error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }
 
 export async function GET(
   req: Request,
-  { params }: { params: { modelId: string } }
+  { params }: { params: { materialId: string } }
 ) {
   try {
-    const models = await db.phoneModel.findMany({
+    const materials = await db.caseMaterial.findMany({
       where: {
-        id: params.modelId,
+        id: params.materialId,
       },
     });
 
-    return NextResponse.json(models);
+    return NextResponse.json(materials);
   } catch (error) {
-    console.log("[MODEL_POST]", error);
+    console.log("[MATERIAL_GET]", error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }
