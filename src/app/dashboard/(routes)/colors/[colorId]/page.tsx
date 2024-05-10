@@ -3,7 +3,7 @@ import { db } from "@/db";
 import { ColorForm } from "./components/color-form";
 
 const ColorPage = async ({ params }: { params: { colorId: string } }) => {
-  const color = await db.phoneColor.findUnique({
+  const color = await db.caseColor.findUnique({
     where: {
       id: params.colorId,
     },

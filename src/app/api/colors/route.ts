@@ -19,7 +19,7 @@ export async function POST(
       return new NextResponse("Valor es requerido", { status: 400 });
     }
 
-    const color = await db.phoneColor.create({
+    const color = await db.caseColor.create({
       data: {
         name,
         value,
@@ -38,7 +38,7 @@ export async function GET(
   { params }: { params: { colorId: string } }
 ) {
   try {
-    const colors = await db.phoneColor.findMany({
+    const colors = await db.caseColor.findMany({
       where: {
         id: params.colorId,
       },

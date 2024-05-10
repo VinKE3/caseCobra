@@ -5,7 +5,7 @@ import { db } from "@/db";
 import { ModelColumn } from "./components/columns";
 import { ModelClient } from "./components/client";
 
-const ModelsPage = async ({ params }: { params: { storeId: string } }) => {
+const ModelsPage = async () => {
   const models = await db.phoneModel.findMany({
     orderBy: {
       createdAt: "desc",

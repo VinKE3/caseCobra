@@ -23,11 +23,13 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Heading } from "@/components/ui/heading";
 import { AlertModal } from "@/components/modal/alert-modal";
+import ImageUpload from "@/components/ui/image-upload";
 
 const formSchema = z.object({
   name: z.string().min(1, {
     message: "Nombre es requerido",
   }),
+  imageId: z.string().min(1),
 });
 type ModelFormValues = z.infer<typeof formSchema>;
 
@@ -52,6 +54,7 @@ export const ModelForm: React.FC<ModelFormProps> = ({ initialData }) => {
     resolver: zodResolver(formSchema),
     defaultValues: initialData || {
       name: "",
+      imageId: "",
     },
   });
   const onSubmit = async (data: ModelFormValues) => {
@@ -64,6 +67,7 @@ export const ModelForm: React.FC<ModelFormProps> = ({ initialData }) => {
       }
       router.refresh();
       router.push(`/dashboard/models`);
+      router.refresh();
       toast.success(toastMessage);
     } catch (error: any) {
       toast.error("Algo Salío mal.");
@@ -116,17 +120,35 @@ export const ModelForm: React.FC<ModelFormProps> = ({ initialData }) => {
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-8 w-full"
         >
+          <FormField
+            control={form.control}
+            name="imageId"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Imagen Modelo</FormLabel>
+                <FormControl>
+                  <ImageUpload
+                    value={field.value ? [field.value] : []}
+                    disabled={loading}
+                    onChange={(url) => field.onChange(url)}
+                    onRemove={() => field.onChange("")}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <div className="md:grid md:grid-cols-3 gap-8">
             <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nombre</FormLabel>
+                  <FormLabel>Modelo</FormLabel>
                   <FormControl>
                     <Input
                       disabled={loading}
-                      placeholder="Nombre del Modelo"
+                      placeholder="Nombre Banner"
                       {...field}
                     />
                   </FormControl>

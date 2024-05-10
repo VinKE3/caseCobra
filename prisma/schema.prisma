@@ -14,7 +14,7 @@ model Configuration {
   imageUrl        String
   croppedImageUrl String?
   colorId     String    
-  color       PhoneColor     @relation(fields: [colorId], references: [id])
+  color       CaseColor     @relation(fields: [colorId], references: [id])
   modelId String 
   model PhoneModel @relation(fields: [modelId], references: [id])
   materialId String
@@ -23,7 +23,7 @@ model Configuration {
   finish CaseFinish @relation(fields: [finishId], references: [id])
 }
 
-model PhoneColor {
+model CaseColor {
   id              String        @id @default(cuid())
   name            String
   value           String
@@ -33,12 +33,14 @@ model PhoneColor {
 }
 
 model PhoneModel {
-  id              String        @id @default(cuid())
-  name            String
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  id          String    @id @default(cuid())
+  name        String
+  imageId     String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
   configuration Configuration[]
 }
+
 
 model CaseMaterial {
   id              String        @id @default(cuid())
@@ -55,3 +57,4 @@ model CaseFinish {
   updatedAt   DateTime    @updatedAt
   configuration Configuration[]
 }
+

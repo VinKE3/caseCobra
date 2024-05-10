@@ -5,8 +5,8 @@ import { db } from "@/db";
 import { ColorColumn } from "./components/columns";
 import { ColorClient } from "./components/client";
 
-const ColorsPage = async ({ params }: { params: { storeId: string } }) => {
-  const colors = await db.phoneColor.findMany({
+const ColorsPage = async () => {
+  const colors = await db.caseColor.findMany({
     orderBy: {
       createdAt: "desc",
     },

@@ -9,15 +9,20 @@ export async function POST(
   try {
     const body = await req.json();
 
-    const { name, value } = body;
+    const { name, imageId } = body;
 
     if (!name) {
       return new NextResponse("Nombre es requerido", { status: 400 });
     }
 
+    if (!imageId) {
+      return new NextResponse("Image Id is required", { status: 400 });
+    }
+
     const model = await db.phoneModel.create({
       data: {
         name,
+        imageId,
       },
     });
 

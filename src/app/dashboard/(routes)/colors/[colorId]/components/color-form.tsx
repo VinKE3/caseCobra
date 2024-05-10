@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { Trash } from "lucide-react";
-import { PhoneColor } from "@prisma/client";
+import { CaseColor } from "@prisma/client";
 import { useParams, useRouter } from "next/navigation";
 
 import { Input } from "@/components/ui/input";
@@ -44,7 +44,7 @@ const formSchema = z.object({
 type ColorFormValues = z.infer<typeof formSchema>;
 
 interface ColorFormProps {
-  initialData: PhoneColor | null;
+  initialData: CaseColor | null;
 }
 
 export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
@@ -79,6 +79,7 @@ export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
       }
       router.refresh();
       router.push(`/dashboard/colors`);
+      router.refresh();
       toast.success(toastMessage);
     } catch (error: any) {
       toast.error("Algo Salío mal.");

@@ -53,28 +53,33 @@ export async function PATCH(
   try {
     const body = await req.json();
 
-    const { name } = body;
+    const { name, imageId } = body;
 
     if (!name) {
       return new NextResponse("Name is required", { status: 400 });
+    }
+
+    if (!imageId) {
+      return new NextResponse("Image URL is required", { status: 400 });
     }
 
     if (!params.modelId) {
       return new NextResponse("Model id is required", { status: 400 });
     }
 
-    const color = await db.phoneColor.update({
+    const model = await db.phoneModel.update({
       where: {
         id: params.modelId,
       },
       data: {
         name,
+        imageId,
       },
     });
 
-    return NextResponse.json(color);
+    return NextResponse.json(model);
   } catch (error) {
-    console.log("[COLOR_PATCH]", error);
+    console.log("[MODEL_PATCH]", error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }

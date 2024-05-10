@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useParams, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 const DashNavbar = () => {
   const pathname = usePathname();
@@ -13,7 +13,7 @@ const DashNavbar = () => {
     },
     {
       href: `/dashboard/models`,
-      label: "Tamaños",
+      label: "Modelos",
       active: pathname === `/dashboard/models`,
     },
     {

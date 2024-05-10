@@ -11,7 +11,7 @@ export async function GET(
       return new NextResponse("Color id is required", { status: 400 });
     }
 
-    const color = await db.phoneColor.findUnique({
+    const color = await db.caseColor.findUnique({
       where: {
         id: params.colorId,
       },
@@ -33,7 +33,7 @@ export async function DELETE(
       return new NextResponse("Color id is required", { status: 400 });
     }
 
-    const color = await db.phoneColor.delete({
+    const color = await db.caseColor.delete({
       where: {
         id: params.colorId,
       },
@@ -67,7 +67,7 @@ export async function PATCH(
       return new NextResponse("Color id is required", { status: 400 });
     }
 
-    const color = await db.phoneColor.update({
+    const color = await db.caseColor.update({
       where: {
         id: params.colorId,
       },
