@@ -13,6 +13,7 @@ model Configuration {
   height          Int
   imageUrl        String
   croppedImageUrl String?
+  color String?
   // colorId     String?    
   // color       CaseColor?     @relation(fields: [colorId], references: [id])
   // modelId String?
@@ -29,7 +30,6 @@ model CaseColor {
   value           String
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
-
 }
 
 model PhoneModel {

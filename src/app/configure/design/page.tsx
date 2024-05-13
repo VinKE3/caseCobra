@@ -22,7 +22,10 @@ const Page = async ({ searchParams }: PageProps) => {
     return notFound();
   }
 
-  const models = await db.phoneModel.findMany({});
+  const models = await db.phoneModel.findMany();
+  const colors = await db.caseColor.findMany();
+  const fineshes = await db.caseFinish.findMany();
+  const materials = await db.caseMaterial.findMany();
 
   const { imageUrl, width, height } = configuration;
   return (
@@ -31,6 +34,9 @@ const Page = async ({ searchParams }: PageProps) => {
       imageDimensions={{ width, height }}
       imageUrl={imageUrl}
       models={models}
+      colors={colors}
+      fineshes={fineshes}
+      materials={materials}
     />
   );
 };
