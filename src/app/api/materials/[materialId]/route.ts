@@ -53,7 +53,7 @@ export async function PATCH(
   try {
     const body = await req.json();
 
-    const { name, basePrice } = body;
+    const { name, basePrice, description } = body;
 
     if (!name) {
       return new NextResponse("Name is required", { status: 400 });
@@ -74,6 +74,7 @@ export async function PATCH(
       data: {
         name,
         basePrice,
+        description,
       },
     });
 

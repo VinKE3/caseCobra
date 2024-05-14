@@ -28,6 +28,7 @@ const formSchema = z.object({
   name: z.string().min(1, {
     message: "Nombre es requerido",
   }),
+  description: z.string().optional().nullable(),
   basePrice: z.coerce.number().min(1, { message: "Requerido" }),
 });
 
@@ -159,6 +160,24 @@ export const FinishForm: React.FC<FinishFormProps> = ({ initialData }) => {
                       disabled={loading}
                       placeholder="9.99"
                       {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Descripción</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={loading}
+                      placeholder="Descripción de la terminación"
+                      {...field}
+                      value={field.value || ""}
                     />
                   </FormControl>
                   <FormMessage />

@@ -29,6 +29,7 @@ const formSchema = z.object({
     message: "Nombre es requerido",
   }),
   basePrice: z.coerce.number().min(1, { message: "Requerido" }),
+  description: z.string().optional().nullable(),
 });
 
 type MaterialFormValues = z.infer<typeof formSchema>;
@@ -159,6 +160,24 @@ export const MaterialForm: React.FC<MaterialFormProps> = ({ initialData }) => {
                       disabled={loading}
                       placeholder="9.99"
                       {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Descripción</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={loading}
+                      placeholder="Descripción del Material"
+                      {...field}
+                      value={field.value || ""}
                     />
                   </FormControl>
                   <FormMessage />

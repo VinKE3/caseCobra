@@ -9,7 +9,7 @@ export async function POST(
   try {
     const body = await req.json();
 
-    const { name, basePrice } = body;
+    const { name, basePrice, description } = body;
 
     if (!name) {
       return new NextResponse("Nombre es requerido", { status: 400 });
@@ -23,6 +23,7 @@ export async function POST(
       data: {
         name,
         basePrice,
+        description,
       },
     });
 
