@@ -1,25 +1,10 @@
 import { type ClassValue, clsx } from "clsx";
 import { Metadata } from "next";
 import { twMerge } from "tailwind-merge";
-import { Decimal } from "decimal.js";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
-export const formatPriceDecimal = (price: number | string | Decimal) => {
-  if (price instanceof Decimal) {
-    return price.toNumber();
-  }
-
-  const numericPrice = typeof price === "number" ? price : Number(price);
-
-  const formatter = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  });
-
-  return formatter.format(numericPrice);
-};
 
 export const formatPrice = (price: number) => {
   const formatter = new Intl.NumberFormat("en-US", {
@@ -54,7 +39,7 @@ export function constructMetadata({
       title,
       description,
       images: [image],
-      creator: "@joshtriedcoding",
+      creator: "@vinKe",
     },
     icons,
     metadataBase: new URL("https://casecobra.vercel.app/"),

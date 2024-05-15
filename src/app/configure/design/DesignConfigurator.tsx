@@ -3,7 +3,7 @@
 import HandleComponent from "@/components/HandleComponent";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { cn, formatPrice, formatPriceDecimal } from "@/lib/utils";
+import { cn, formatPrice } from "@/lib/utils";
 import NextImage from "next/image";
 import { Rnd } from "react-rnd";
 import { RadioGroup } from "@headlessui/react";
@@ -15,10 +15,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Check, ChevronsUpDown } from "lucide-react";
 import { useUploadThing } from "@/lib/uploadthing";
-import { useToast } from "@/components/ui/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import {
@@ -47,6 +47,8 @@ const DesignConfigurator = ({
   fineshes,
   materials,
 }: DesignConfiguratorProps) => {
+  const { toast } = useToast();
+  const router = useRouter();
   const [options, setOptions] = useState<{
     color: (typeof colors)[number];
     model: (typeof models)[number];
@@ -72,6 +74,70 @@ const DesignConfigurator = ({
   const containerRef = useRef<HTMLDivElement>(null);
 
   const { startUpload } = useUploadThing("imageUploader");
+
+  async function saveConfiguration() {
+    try {
+      const {
+        left: caseLeft,
+        top: caseTop,
+        width,
+        height,
+      } = phoneCaseRef.current!.getBoundingClientRect();
+
+      const { left: containerLeft, top: containerTop } =
+        containerRef.current!.getBoundingClientRect();
+
+      const leftOffset = caseLeft - containerLeft;
+      const topOffset = caseTop - containerTop;
+
+      const actualX = renderedPosition.x - leftOffset;
+      const actualY = renderedPosition.y - topOffset;
+
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d");
+
+      const userImage = new Image();
+      userImage.crossOrigin = "anonymous";
+      userImage.src = imageUrl;
+      await new Promise((resolve) => (userImage.onload = resolve));
+
+      ctx?.drawImage(
+        userImage,
+        actualX,
+        actualY,
+        renderedDimension.width,
+        renderedDimension.height
+      );
+
+      const base64 = canvas.toDataURL();
+      console.log(base64);
+      const base64Data = base64.split(",")[1];
+
+      const blob = base64ToBlob(base64Data, "image/png");
+      const file = new File([blob], "filename.png", { type: "image/png" });
+
+      await startUpload([file], { configId });
+    } catch (err) {
+      toast({
+        title: "Something went wrong",
+        description:
+          "There was a problem saving your config, please try again.",
+        variant: "destructive",
+      });
+    }
+  }
+
+  function base64ToBlob(base64: string, mimeType: string) {
+    const byteCharacters = atob(base64);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    return new Blob([byteArray], { type: mimeType });
+  }
 
   return (
     <div className="relative mt-20 grid grid-cols-1 lg:grid-cols-3 mb-20 pb-20">
@@ -138,11 +204,11 @@ const DesignConfigurator = ({
           </div>
         </Rnd>
       </div>
-      <div className="h-[37.5rem] w-full col-span-full lg:col-span-1 flex flex-col bg-white">
+      <div className="h-[37.5rem] w-full col-span-full lg:col-span-1 flex flex-col bg-white dark:bg-black">
         <ScrollArea className="relative flex-1 overflow-auto">
           <div
             aria-hidden="true"
-            className="absolute z-10 inset-x-0 bottom-0 h-12 bg-gradient-to-t from-white pointer-events-none"
+            className="absolute z-10 inset-x-0 bottom-0 h-12 bg-gradient-to-t from-white dark:from-black pointer-events-none"
           />
 
           <div className="px-8 pb-12 pt-8">
@@ -208,7 +274,8 @@ const DesignConfigurator = ({
                           className={cn(
                             "flex text-sm gap-1 items-center p-1.5 cursor-default hover:bg-zinc-100",
                             {
-                              "bg-zinc-100": model.name === options.model.name,
+                              "bg-zinc-100 dark:bg-zinc-500":
+                                model.name === options.model.name,
                             }
                           )}
                           onClick={() => {
@@ -247,7 +314,7 @@ const DesignConfigurator = ({
                         value={option}
                         className={({ active, checked }) =>
                           cn(
-                            "relative block cursor-pointer rounded-lg bg-white px-6 py-4 shadow-sm border-2 border-zinc-200 focus:outline-none ring-0 focus:ring-0 outline-none sm:flex sm:justify-between",
+                            "relative block cursor-pointer rounded-lg bg-white dark:bg-black px-6 py-4 shadow-sm border-2 border-zinc-200 focus:outline-none ring-0 focus:ring-0 outline-none sm:flex sm:justify-between",
                             {
                               "border-primary": active || checked,
                             }
@@ -257,7 +324,7 @@ const DesignConfigurator = ({
                         <span className="flex items-center">
                           <span className="flex flex-col text-sm">
                             <RadioGroup.Label
-                              className="font-medium text-gray-900"
+                              className="font-medium text-gray-900 dark:text-white"
                               as="span"
                             >
                               {option.name}
@@ -266,7 +333,7 @@ const DesignConfigurator = ({
                             {option.description ? (
                               <RadioGroup.Description
                                 as="span"
-                                className="text-gray-500"
+                                className="text-gray-500 dark:text-gray-300"
                               >
                                 <span className="block sm:inline">
                                   {option.description}
@@ -280,8 +347,8 @@ const DesignConfigurator = ({
                           as="span"
                           className="mt-2 flex text-sm sm:ml-4 sm:mt-0 sm:flex-col sm:text-right"
                         >
-                          <span className="font-medium text-gray-900">
-                            {formatPriceDecimal(option.basePrice)}
+                          <span className="font-medium text-gray-900 dark:text-gray-300">
+                            {formatPrice(Number(option.basePrice))}
                           </span>
                         </RadioGroup.Description>
                       </RadioGroup.Option>
@@ -289,11 +356,11 @@ const DesignConfigurator = ({
                   </div>
                 </RadioGroup>
                 <RadioGroup
-                  value={options.material}
+                  value={options.finish}
                   onChange={(val) => {
                     setOptions((prev) => ({
                       ...prev,
-                      material: val,
+                      finish: val,
                     }));
                   }}
                 >
@@ -305,7 +372,7 @@ const DesignConfigurator = ({
                         value={option}
                         className={({ active, checked }) =>
                           cn(
-                            "relative block cursor-pointer rounded-lg bg-white px-6 py-4 shadow-sm border-2 border-zinc-200 focus:outline-none ring-0 focus:ring-0 outline-none sm:flex sm:justify-between",
+                            "relative block cursor-pointer rounded-lg bg-white dark:bg-black px-6 py-4 shadow-sm border-2 border-zinc-200 focus:outline-none ring-0 focus:ring-0 outline-none sm:flex sm:justify-between",
                             {
                               "border-primary": active || checked,
                             }
@@ -315,7 +382,7 @@ const DesignConfigurator = ({
                         <span className="flex items-center">
                           <span className="flex flex-col text-sm">
                             <RadioGroup.Label
-                              className="font-medium text-gray-900"
+                              className="font-medium text-gray-900 dark:text-gray-300"
                               as="span"
                             >
                               {option.name}
@@ -324,7 +391,7 @@ const DesignConfigurator = ({
                             {option.description ? (
                               <RadioGroup.Description
                                 as="span"
-                                className="text-gray-500"
+                                className="text-gray-500 dark:text-gray-300"
                               >
                                 <span className="block sm:inline">
                                   {option.description}
@@ -338,8 +405,8 @@ const DesignConfigurator = ({
                           as="span"
                           className="mt-2 flex text-sm sm:ml-4 sm:mt-0 sm:flex-col sm:text-right"
                         >
-                          <span className="font-medium text-gray-900">
-                            {formatPriceDecimal(option.basePrice)}
+                          <span className="font-medium text-gray-900 dark:text-gray-300">
+                            {formatPrice(Number(option.basePrice))}
                           </span>
                         </RadioGroup.Description>
                       </RadioGroup.Option>
@@ -350,6 +417,28 @@ const DesignConfigurator = ({
             </div>
           </div>
         </ScrollArea>
+        <div className="w-full px-8 h-16 bg-white dark:bg-black">
+          <div className="h-px w-full bg-zinc-200 dark:bg-zinc-950" />
+          <div className="w-full h-full flex justify-end items-center">
+            <div className="w-full flex gap-6 items-center">
+              <p className="font-medium whitespace-nowrap">
+                {formatPrice(
+                  Number(options.model.basePrice) +
+                    Number(options.material.basePrice) +
+                    Number(options.finish.basePrice)
+                )}
+              </p>
+              <Button
+                onClick={() => saveConfiguration()}
+                size="sm"
+                className="w-full"
+              >
+                Continuar
+                <ArrowRight className="h-4 w-4 ml-1.5 inline" />
+              </Button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
