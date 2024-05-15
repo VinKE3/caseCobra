@@ -11,6 +11,7 @@ const Navbar = async () => {
   const user = await getUser();
 
   const isAdmin = user?.email === process.env.ADMIN_EMAIL;
+  const isAdmin2 = user?.email === process.env.ADMIN_EMAIL2;
   return (
     <nav className="sticky z-[100] h-14 inset-x-0 top-0 w-full border-b border-gray-200 bg-white/75 dark:bg-black backdrop-blur-lg transition-all">
       <MaxWidthWrapper>
@@ -30,7 +31,7 @@ const Navbar = async () => {
                 >
                   Salir
                 </Link>
-                {isAdmin ? (
+                {isAdmin || isAdmin2 ? (
                   <Link
                     href="/dashboard"
                     className={buttonVariants({

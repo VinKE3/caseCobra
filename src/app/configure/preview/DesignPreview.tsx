@@ -12,6 +12,7 @@ import Phone from "@/components/Phone";
 import { cn, formatPrice } from "@/lib/utils";
 import { ArrowRight, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import PhonePreview from "@/components/PhonePreview";
 
 interface DesignPreviewProps {
   configuration: Configuration;
@@ -33,6 +34,7 @@ const DesignPreview: React.FC<DesignPreviewProps> = ({
   useEffect(() => setShowConfetti(true));
 
   const { color, model, finish, material } = configuration;
+  console.log(configuration);
 
   const tw =
     colorsDb.find((supportedColor) => {
@@ -48,6 +50,15 @@ const DesignPreview: React.FC<DesignPreviewProps> = ({
       const normalizedConfigModel = configuration.model?.toLowerCase().trim();
       return normalizedModelName === normalizedConfigModel;
     })?.basePrice ?? 0;
+
+  const imageModel =
+    modelsDb.find((model) => {
+      const normalizedModelName = model.name.toLowerCase().trim(); // Normalize for comparison
+      const normalizedConfigModel = configuration.model?.toLowerCase().trim();
+      return normalizedModelName === normalizedConfigModel;
+    })?.imageId ?? "sinImage";
+
+  console.log(imageModel);
 
   const PriceMaterial =
     materialsDb.find((material) => {
@@ -78,10 +89,11 @@ const DesignPreview: React.FC<DesignPreviewProps> = ({
       </div>
       <div className="mt-20 flex flex-col items-center md:grid text-sm sm:grid-cols-12 sm:grid-rows-1 sm:gap-x-6 md:gap-x-8 lg:gap-x-12">
         <div className="md:col-span-4 lg:col-span-3 md:row-span-2 md:row-end-2">
-          <Phone
+          <PhonePreview
             style={{ backgroundColor: tw }}
             className="max-w-[150px] md:max-w-full"
             imgSrc={configuration.croppedImageUrl!}
+            imgModel={imageModel}
           />
         </div>
         <div className="mt-6 sm:col-span-9 md:row-end-1">
@@ -158,7 +170,7 @@ const DesignPreview: React.FC<DesignPreviewProps> = ({
                   </p>
                   <p className="font-semibold text-gray-900 dark:text-gray-100">
                     {formatPrice(
-                      Number(PriceMaterial) +
+                      Number(basePriceModel) +
                         Number(PriceMaterial) +
                         Number(PriceFinish)
                     )}
