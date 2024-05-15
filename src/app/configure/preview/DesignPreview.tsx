@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Confetti from "react-dom-confetti";
 import {
   Configuration,
@@ -8,12 +8,16 @@ import {
   CaseMaterial,
   PhoneModel,
 } from "@prisma/client";
-import Phone from "@/components/Phone";
-import { cn, formatPrice } from "@/lib/utils";
+import { formatPrice } from "@/lib/utils";
 import { ArrowRight, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PhonePreview from "@/components/PhonePreview";
-
+import { useMutation } from "@tanstack/react-query";
+import { createCheckoutSession } from "./actions";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/components/ui/use-toast";
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
+import LoginModal from "@/components/LoginModal";
 interface DesignPreviewProps {
   configuration: Configuration;
   modelsDb: PhoneModel[];
@@ -29,12 +33,16 @@ const DesignPreview: React.FC<DesignPreviewProps> = ({
   finishesDb,
   materialsDb,
 }) => {
+  const router = useRouter();
+  const { toast } = useToast();
   const [showConfetti, setShowConfetti] = useState(false);
+  const { id } = configuration;
+  const { user } = useKindeBrowserClient();
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
 
   useEffect(() => setShowConfetti(true));
 
   const { color, model, finish, material } = configuration;
-  console.log(configuration);
 
   const tw =
     colorsDb.find((supportedColor) => {
@@ -58,8 +66,6 @@ const DesignPreview: React.FC<DesignPreviewProps> = ({
       return normalizedModelName === normalizedConfigModel;
     })?.imageId ?? "sinImage";
 
-  console.log(imageModel);
-
   const PriceMaterial =
     materialsDb.find((material) => {
       const normalizedMaterialName = material.name.toLowerCase().trim(); // Normalize for comparison
@@ -76,6 +82,33 @@ const DesignPreview: React.FC<DesignPreviewProps> = ({
       return normalizeFinishName === normalizeConfigFinish;
     })?.basePrice ?? 0;
 
+  const { mutate: createPaymentSession } = useMutation({
+    mutationKey: ["get-checkout-session"],
+    mutationFn: createCheckoutSession,
+    onSuccess: ({ url }) => {
+      if (url) router.push(url);
+      else throw new Error("Unable to retrieve payment URL.");
+    },
+    onError: () => {
+      toast({
+        title: "Something went wrong",
+        description: "There was an error on our end. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleCheckout = () => {
+    if (user) {
+      // create payment session
+      createPaymentSession({ configId: id });
+    } else {
+      // need to log in
+      localStorage.setItem("configurationId", id);
+      setIsLoginModalOpen(true);
+    }
+  };
+
   return (
     <>
       <div
@@ -87,6 +120,8 @@ const DesignPreview: React.FC<DesignPreviewProps> = ({
           config={{ elementCount: 200, spread: 90 }}
         />
       </div>
+      <LoginModal isOpen={isLoginModalOpen} setIsOpen={setIsLoginModalOpen} />
+
       <div className="mt-20 flex flex-col items-center md:grid text-sm sm:grid-cols-12 sm:grid-rows-1 sm:gap-x-6 md:gap-x-8 lg:gap-x-12">
         <div className="md:col-span-4 lg:col-span-3 md:row-span-2 md:row-end-2">
           <PhonePreview
@@ -181,8 +216,10 @@ const DesignPreview: React.FC<DesignPreviewProps> = ({
 
             <div className="mt-8 flex justify-end pb-12">
               <Button
-                onClick={() => console.log("enter")}
+                onClick={() => handleCheckout()}
                 className="px-4 sm:px-6 lg:px-8"
+                isLoading={false}
+                loadingText="Procesando"
               >
                 Pagar <ArrowRight className="h-4 w-4 ml-1.5 inline" />
               </Button>

@@ -18,38 +18,40 @@ const LoginModal = ({
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
   return (
-    <Dialog onOpenChange={setIsOpen} open={isOpen}>
-      <DialogContent className="absolute z-[9999999]">
-        <DialogHeader>
-          <div className="relative mx-auto w-24 h-24 mb-2">
-            <Image
-              src="/snake-1.png"
-              alt="snake image"
-              className="object-contain"
-              fill
-            />
-          </div>
-          <DialogTitle className="text-3xl text-center font-bold tracking-tight text-gray-900">
-            Logueate para continuar
-          </DialogTitle>
-          <DialogDescription className="text-base text-center py-2">
-            <span className="font-medium text-zinc-900">
-              Tu configuración esta guardada!
-            </span>{" "}
-            Porfavor Logueate o crea una cuenta para completar tu compra.
-          </DialogDescription>
-        </DialogHeader>
+    <div>
+      <Dialog onOpenChange={setIsOpen} open={isOpen}>
+        <DialogContent className="absolute z-[9999999]">
+          <DialogHeader>
+            <div className="relative mx-auto w-24 h-24 mb-2">
+              <Image
+                src="/snake-1.png"
+                alt="snake image"
+                className="object-contain"
+                fill
+              />
+            </div>
+            <DialogTitle className="text-3xl text-center font-bold tracking-tight text-gray-900 dark:text-white">
+              Logueate para continuar
+            </DialogTitle>
+            <DialogDescription className="text-base text-center py-2">
+              <span className="font-medium text-zinc-900 dark:text-zinc-100">
+                Tu configuración esta guardada!
+              </span>{" "}
+              Porfavor Logueate o crea una cuenta para completar tu compra.
+            </DialogDescription>
+          </DialogHeader>
 
-        <div className="grid grid-cols-2 gap-6 divide-x divide-gray-200">
-          <LoginLink className={buttonVariants({ variant: "outline" })}>
-            Login
-          </LoginLink>
-          <RegisterLink className={buttonVariants({ variant: "default" })}>
-            Registrarse
-          </RegisterLink>
-        </div>
-      </DialogContent>
-    </Dialog>
+          <div className="grid grid-cols-2 gap-6 divide-x divide-gray-200 dark:divide-gray-500">
+            <LoginLink className={buttonVariants({ variant: "outline" })}>
+              Login
+            </LoginLink>
+            <RegisterLink className={buttonVariants({ variant: "default" })}>
+              Registrarse
+            </RegisterLink>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </div>
   );
 };
 
