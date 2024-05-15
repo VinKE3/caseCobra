@@ -21,6 +21,7 @@ import { ArrowRight, Check, ChevronsUpDown } from "lucide-react";
 import { useUploadThing } from "@/lib/uploadthing";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { saveConfig as _saveConfig, SaveConfigArgs } from "./actions";
 import {
   CaseColor,
   CaseFinish,
@@ -49,6 +50,22 @@ const DesignConfigurator = ({
 }: DesignConfiguratorProps) => {
   const { toast } = useToast();
   const router = useRouter();
+  const { mutate: saveConfig, isPending } = useMutation({
+    mutationKey: ["save-config"],
+    mutationFn: async (args: SaveConfigArgs) => {
+      await Promise.all([saveConfiguration(), _saveConfig(args)]);
+    },
+    onError: () => {
+      toast({
+        title: "Something went wrong",
+        description: "There was an error on our end. Please try again.",
+        variant: "destructive",
+      });
+    },
+    onSuccess: () => {
+      router.push(`/configure/preview?id=${configId}`);
+    },
+  });
   const [options, setOptions] = useState<{
     color: (typeof colors)[number];
     model: (typeof models)[number];
@@ -112,7 +129,6 @@ const DesignConfigurator = ({
       );
 
       const base64 = canvas.toDataURL();
-      console.log(base64);
       const base64Data = base64.split(",")[1];
 
       const blob = base64ToBlob(base64Data, "image/png");
@@ -429,7 +445,15 @@ const DesignConfigurator = ({
                 )}
               </p>
               <Button
-                onClick={() => saveConfiguration()}
+                onClick={() =>
+                  saveConfig({
+                    configId,
+                    color: options.color.name,
+                    finish: options.finish.name,
+                    material: options.material.name,
+                    model: options.model.name,
+                  })
+                }
                 size="sm"
                 className="w-full"
               >

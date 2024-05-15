@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Toaster } from "@/components/ui/toaster";
 import { ToastProvider } from "@/providers/toast-provider";
+import QueryProvider from "@/providers/query-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,7 +31,9 @@ export default function RootLayout({
         >
           <Navbar />
           <main className="flex grainy-light flex-col min-h-[calc(100vh-3.5rem-1px)]">
-            <div className="flex-1 flex flex-col h-full"> {children}</div>
+            <div className="flex-1 flex flex-col h-full">
+              <QueryProvider>{children}</QueryProvider>
+            </div>
             <Footer />
           </main>
           <ToastProvider />
