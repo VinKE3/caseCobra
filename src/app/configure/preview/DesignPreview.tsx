@@ -99,6 +99,7 @@ const DesignPreview: React.FC<DesignPreviewProps> = ({
   });
 
   const handleCheckout = () => {
+    console.log(user);
     if (user) {
       // create payment session
       createPaymentSession({ configId: id });
