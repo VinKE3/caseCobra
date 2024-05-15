@@ -6,7 +6,7 @@ import { Decimal } from "decimal.js";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
-export const formatPrice = (price: number | string | Decimal) => {
+export const formatPriceDecimal = (price: number | string | Decimal) => {
   if (price instanceof Decimal) {
     return price.toNumber();
   }
@@ -19,6 +19,15 @@ export const formatPrice = (price: number | string | Decimal) => {
   });
 
   return formatter.format(numericPrice);
+};
+
+export const formatPrice = (price: number) => {
+  const formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
+
+  return formatter.format(price);
 };
 
 export function constructMetadata({

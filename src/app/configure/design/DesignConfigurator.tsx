@@ -3,7 +3,7 @@
 import HandleComponent from "@/components/HandleComponent";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { cn, formatPrice } from "@/lib/utils";
+import { cn, formatPrice, formatPriceDecimal } from "@/lib/utils";
 import NextImage from "next/image";
 import { Rnd } from "react-rnd";
 import { RadioGroup } from "@headlessui/react";
@@ -281,7 +281,7 @@ const DesignConfigurator = ({
                           className="mt-2 flex text-sm sm:ml-4 sm:mt-0 sm:flex-col sm:text-right"
                         >
                           <span className="font-medium text-gray-900">
-                            {formatPrice(option.basePrice)}
+                            {formatPriceDecimal(option.basePrice)}
                           </span>
                         </RadioGroup.Description>
                       </RadioGroup.Option>
@@ -339,7 +339,7 @@ const DesignConfigurator = ({
                           className="mt-2 flex text-sm sm:ml-4 sm:mt-0 sm:flex-col sm:text-right"
                         >
                           <span className="font-medium text-gray-900">
-                            {formatPrice(option.basePrice)}
+                            {formatPriceDecimal(option.basePrice)}
                           </span>
                         </RadioGroup.Description>
                       </RadioGroup.Option>
