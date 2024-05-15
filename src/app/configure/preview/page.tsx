@@ -23,7 +23,20 @@ const Page = async ({ searchParams }: PageProps) => {
     return notFound();
   }
 
-  return <DesignPreview />;
+  const models = await db.phoneModel.findMany();
+  const colors = await db.caseColor.findMany();
+  const fineshes = await db.caseFinish.findMany();
+  const materials = await db.caseMaterial.findMany();
+
+  return (
+    <DesignPreview
+      configuration={configuration}
+      modelsDb={models}
+      colorsDb={colors}
+      finishesDb={fineshes}
+      materialsDb={materials}
+    />
+  );
 };
 
 export default Page;
