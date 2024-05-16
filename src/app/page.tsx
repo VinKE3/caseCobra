@@ -1,12 +1,15 @@
+"use client";
 import { Icons } from "@/components/Icons";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import Phone from "@/components/Phone";
 import { Reviews } from "@/components/Reviews";
 import { buttonVariants } from "@/components/ui/button";
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import { ArrowRight, Check, Star } from "lucide-react";
 import Link from "next/link";
 
 export default function Home() {
+  const { user } = useKindeBrowserClient();
   return (
     <div className="bg-slate-50 dark:bg-black grainy-light">
       <section>

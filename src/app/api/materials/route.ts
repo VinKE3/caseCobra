@@ -16,7 +16,7 @@ export async function POST(
     }
 
     if (!basePrice) {
-      return new NextResponse("Price is required", { status: 400 });
+      return new NextResponse("Precio es requerido", { status: 400 });
     }
 
     const material = await db.caseMaterial.create({

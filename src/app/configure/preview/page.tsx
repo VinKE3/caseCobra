@@ -1,6 +1,7 @@
 import { db } from "@/db";
 import { notFound } from "next/navigation";
 import DesignPreview from "./DesignPreview";
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 
 interface PageProps {
   searchParams: {

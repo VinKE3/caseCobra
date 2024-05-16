@@ -1,14 +1,7 @@
 "use server";
 import { db } from "@/db";
-import { formatPrice } from "@/lib/utils";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import {
-  Order,
-  CaseColor,
-  CaseFinish,
-  CaseMaterial,
-  PhoneModel,
-} from "@prisma/client";
+import { Order } from "@prisma/client";
 import { stripe } from "@/lib/stripe";
 
 export const createCheckoutSession = async ({

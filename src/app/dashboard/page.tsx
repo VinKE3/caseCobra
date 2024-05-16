@@ -75,20 +75,20 @@ const Page = async () => {
   const MONTHLY_GOAL = 2500;
 
   return (
-    <div className="flex min-h-screen w-full bg-muted/40">
+    <div className="flex min-h-screen w-full bg-muted/40 dark:bg-black dark:bg-muted/0">
       <div className="max-w-7xl w-full mx-auto flex flex-col sm:gap-4 sm:py-4">
         <div className="flex flex-col gap-16">
           <div className="grid gap-4 sm:grid-cols-2">
             <Card>
               <CardHeader className="pb-2">
-                <CardDescription>Last Week</CardDescription>
+                <CardDescription>última semana</CardDescription>
                 <CardTitle className="text-4xl">
                   {formatPrice(lastWeekSum._sum.amount ?? 0)}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-sm text-muted-foreground">
-                  of {formatPrice(WEEKLY_GOAL)} goal
+                  de {formatPrice(WEEKLY_GOAL)} estimados.
                 </div>
               </CardContent>
               <CardFooter>
@@ -99,14 +99,14 @@ const Page = async () => {
             </Card>
             <Card>
               <CardHeader className="pb-2">
-                <CardDescription>Last Month</CardDescription>
+                <CardDescription>último Mes</CardDescription>
                 <CardTitle className="text-4xl">
                   {formatPrice(lastMonthSum._sum.amount ?? 0)}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-sm text-muted-foreground">
-                  of {formatPrice(MONTHLY_GOAL)} goal
+                  de {formatPrice(MONTHLY_GOAL)} estimados.
                 </div>
               </CardContent>
               <CardFooter>
@@ -117,17 +117,19 @@ const Page = async () => {
             </Card>
           </div>
 
-          <h1 className="text-4xl font-bold tracking-tight">Incoming orders</h1>
+          <h1 className="text-4xl font-bold tracking-tight">
+            Pedidos recibidos
+          </h1>
 
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Customer</TableHead>
-                <TableHead className="hidden sm:table-cell">Status</TableHead>
+                <TableHead>Cliente</TableHead>
+                <TableHead className="hidden sm:table-cell">Estado</TableHead>
                 <TableHead className="hidden sm:table-cell">
-                  Purchase date
+                  Fecha de compra
                 </TableHead>
-                <TableHead className="text-right">Amount</TableHead>
+                <TableHead className="text-right">Monto</TableHead>
               </TableRow>
             </TableHeader>
 

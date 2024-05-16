@@ -48,7 +48,7 @@ const PhoneOrder = ({
           className={cn(
             "phone-skew relative z-20 rounded-t-[15px] rounded-b-[10px] md:rounded-t-[30px] md:rounded-b-[20px]"
           )}
-          style={{ backgroundImage: `${color}` }}
+          style={{ backgroundColor: `${color}` }}
           src={croppedImageUrl}
         />
       </div>

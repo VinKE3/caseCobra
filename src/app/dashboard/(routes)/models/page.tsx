@@ -17,7 +17,7 @@ const ModelsPage = async () => {
     id: item.id,
     name: item.name,
     price: formatPrice(item.basePrice.toNumber()),
-    createdAt: format(item.createdAt, "MMMM do, yyyy"),
+    createdAt: format(item.createdAt, "dd-MM-yyyy"),
   }));
 
   return (

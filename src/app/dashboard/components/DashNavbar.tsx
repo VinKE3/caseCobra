@@ -35,7 +35,7 @@ const DashNavbar = () => {
   return (
     <nav className={cn("flex items-center space-x-4 lg:space-x-6")}>
       <div className={`w-full md:block md:w-auto`}>
-        <div className="flex space-x-3  md:p-0 md:flex-row md:space-x-8 md:mt-0 md:border-0">
+        <div className="flex space-x-3 md:p-0 md:flex-row md:space-x-8 md:mt-0 md:border-0">
           {routes.map((route) => (
             <Link
               key={route.href}

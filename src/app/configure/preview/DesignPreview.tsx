@@ -38,6 +38,7 @@ const DesignPreview: React.FC<DesignPreviewProps> = ({
   const [showConfetti, setShowConfetti] = useState(false);
   const { id } = configuration;
   const { user } = useKindeBrowserClient();
+  console.log(user, "usuario");
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
 
   useEffect(() => setShowConfetti(true));
@@ -99,7 +100,6 @@ const DesignPreview: React.FC<DesignPreviewProps> = ({
   });
 
   const handleCheckout = () => {
-    console.log(user);
     if (user) {
       // create payment session
       createPaymentSession({ configId: id });

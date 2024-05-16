@@ -4,10 +4,13 @@ import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 
 const layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <MaxWidthWrapper className="">
-      <Navbar />
+    <div className="h-full mx-auto w-full px-2.5 md:px-20">
+      <div className="flex justify-center items-center">
+        {" "}
+        <Navbar />
+      </div>
       {children}
-    </MaxWidthWrapper>
+    </div>
   );
 };
 
