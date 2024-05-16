@@ -10,6 +10,7 @@ import Link from "next/link";
 
 export default function Home() {
   const { user } = useKindeBrowserClient();
+  console.log(user);
   return (
     <div className="bg-slate-50 dark:bg-black grainy-light">
       <section>
