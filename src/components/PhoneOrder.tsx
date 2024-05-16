@@ -1,11 +1,16 @@
 "use client";
 
-import { CaseColor } from "@prisma/client";
 import { useEffect, useRef, useState } from "react";
 import { AspectRatio } from "./ui/aspect-ratio";
 import { cn } from "@/lib/utils";
 
-const PhoneOrder = ({ croppedImageUrl }: { croppedImageUrl: string }) => {
+const PhoneOrder = ({
+  croppedImageUrl,
+  color,
+}: {
+  croppedImageUrl: string;
+  color: string;
+}) => {
   const ref = useRef<HTMLDivElement>(null);
 
   const [renderedDimensions, setRenderedDimensions] = useState({
@@ -43,6 +48,7 @@ const PhoneOrder = ({ croppedImageUrl }: { croppedImageUrl: string }) => {
           className={cn(
             "phone-skew relative z-20 rounded-t-[15px] rounded-b-[10px] md:rounded-t-[30px] md:rounded-b-[20px]"
           )}
+          style={{ backgroundImage: `${color}` }}
           src={croppedImageUrl}
         />
       </div>
