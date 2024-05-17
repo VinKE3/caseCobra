@@ -7,13 +7,11 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { Toaster } from "@/components/ui/toaster";
 import { ToastProvider } from "@/providers/toast-provider";
 import QueryProvider from "@/providers/query-provider";
+import { constructMetadata } from "@/lib/utils";
 
 const recursive = Recursive({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: "Cobra Case",
-  description: "Imprime tus momentos especiales",
-};
+export const metadata = constructMetadata();
 
 export default function RootLayout({
   children,

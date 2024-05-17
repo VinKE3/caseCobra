@@ -445,6 +445,9 @@ const DesignConfigurator = ({
                 )}
               </p>
               <Button
+                isLoading={isPending}
+                disabled={isPending}
+                loadingText="Guardando"
                 onClick={() =>
                   saveConfig({
                     configId,

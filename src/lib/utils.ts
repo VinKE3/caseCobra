@@ -16,8 +16,8 @@ export const formatPrice = (price: number) => {
 };
 
 export function constructMetadata({
-  title = "CaseCobra - custom high-quality phone cases",
-  description = "Create custom high-quality phone cases in seconds",
+  title = "CaseCobra - Cases personalizados de alta calidad",
+  description = "Cree cases de teléfono personalizados de alta calidad en cuestión de segundos",
   image = "/thumbnail.png",
   icons = "/favicon.ico",
 }: {
@@ -39,9 +39,9 @@ export function constructMetadata({
       title,
       description,
       images: [image],
-      creator: "@vinKe",
+      creator: "@VinKe095",
     },
     icons,
-    metadataBase: new URL("https://casecobra.vercel.app/"),
+    metadataBase: new URL("https://case-cobra-zeta.vercel.app/"),
   };
 }
